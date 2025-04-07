@@ -1,0 +1,12 @@
+(library
+ (name simpletext)
+ (modules lexer parser ast)
+ (libraries menhirLib))
+
+(ocamllex
+ (modules lexer))
+
+(menhir
+ (modules parser)
+ (infer true)
+ (flags --explain --dump))
