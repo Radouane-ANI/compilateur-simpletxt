@@ -1,8 +1,12 @@
+(ocamllex
+ (modules lexer))
+
 (executable
  (public_name simpletext)
  (name main)
  (libraries simpletext))
+
 (menhir
-  (modules parser)
-  (infer true)
-  (flags --explain --dump))
+ (modules parser)
+ (infer true)
+ (flags --explain --dump))

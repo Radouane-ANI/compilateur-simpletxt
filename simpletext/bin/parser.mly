@@ -5,9 +5,9 @@ open Ast
 %token HEADER1
 %token HEADER2
 %token ITEM
-%token EMPH_OPEN
-%token BOLD_OPEN
-%token CLOSE_BRACE
+// %token EMPH_OPEN
+// %token BOLD_OPEN
+// %token CLOSE_BRACE
 %token BOLD_MARK
 %token ITALIC_MARK
 %token LBRACKET
@@ -35,7 +35,7 @@ document:
   corps { $1 }
 
 double_newline:
-  NEWLINE NEWLINE { () }
+  NEWLINE { () }
 
 corps:
   element double_newline corps { $1 :: $3 }

@@ -1,0 +1,13 @@
+# Exemple de fichier SimpleText
+
+N’ oubliez pas :
+dans un fichier SimpleText ,
+les retours à la ligne
+sont ignor é s !
+
+Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
+Pour mettre en forme le texte , on peut utiliser :
+
+\item du * texte en italique * ,
+\item du ** texte en gras ** ,
+\item et des [ liens hypertexte ](https//fr.wikipedia.org/wiki/Hyperlien).

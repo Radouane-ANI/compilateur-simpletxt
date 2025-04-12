@@ -6,9 +6,9 @@ rule token = parse
   | "# "             { HEADER1 }
   | "## "            { HEADER2 }
 
-  | "\\emph{"        { EMPH_OPEN }
+  (* | "\\emph{"        { EMPH_OPEN }
   | "\\textbf{"      { BOLD_OPEN }
-  | "}"              { CLOSE_BRACE }
+  | "}"              { CLOSE_BRACE } *)
   | "**"             { BOLD_MARK }
   | "*"              { ITALIC_MARK }
 
@@ -19,9 +19,10 @@ rule token = parse
 
   | "\\item" [' ' '\t']+ { ITEM }
 
-  | "\n\n"           { NEWLINE }
+  | "\n\n"           {Lexing.new_line lexbuf;Lexing.new_line lexbuf; NEWLINE }
 
-  | [' ' '\t' '\n']+ { token lexbuf }
+  | [' ' '\t' ]+ { token lexbuf }
+  | ['\n']+ { Lexing.new_line lexbuf; token lexbuf }
 
   | [^ '*' '#' '\\' '[' ']' '(' ')' ' ' '\n' '\t']+ as txt
                      { TEXT(txt) }
