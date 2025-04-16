@@ -15,7 +15,7 @@ and fragment =
 
 let string_of_fragment = function
   | Word w -> w
-  | Italic words -> "<em>" ^ String.concat " " words ^ "<em>"
+  | Italic words -> "<em>" ^ String.concat " " words ^ "</em>"
   | Bold words -> "<strong>" ^ String.concat " " words ^ "</strong>"
   | Link (words, url) ->
       "<a href=\"" ^ url ^ "\" >" ^ String.concat " " words ^ " </a> "

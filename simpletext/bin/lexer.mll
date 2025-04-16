@@ -19,7 +19,7 @@ rule token = parse
 
   | "\\item" [' ' '\t']+ { ITEM }
 
-  | "\n\n"           {Lexing.new_line lexbuf;Lexing.new_line lexbuf; NEWLINE }
+  | '\n' ([' ' '\t']* '\n')+ { PARAGRAPH_BREAK }
 
   | [' ' '\t' ]+ { token lexbuf }
   | ['\n']+ { Lexing.new_line lexbuf; token lexbuf }

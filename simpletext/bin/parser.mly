@@ -14,7 +14,7 @@ open Ast
 %token RBRACKET
 %token LPAREN
 %token RPAREN
-%token NEWLINE
+%token PARAGRAPH_BREAK
 %token EOF
 %token <string> TEXT 
 
@@ -34,11 +34,8 @@ main:
 document:
   corps { $1 }
 
-double_newline:
-  NEWLINE { () }
-
 corps:
-  element double_newline corps { $1 :: $3 }
+  element PARAGRAPH_BREAK  corps { $1 :: $3 }
 | element               { [$1] }
 
 element:
