@@ -13,3 +13,12 @@ Pour mettre en forme le texte , on peut utiliser :
 \item du * texte en italique * ,
 \item du ** texte en gras ** ,
 \item et des [ liens hypertexte ](https://fr.wikipedia.org/wiki/Hyperlien).
+\item Un item simple .
+\item { Et un item complexe .
+
+Il contient :
+
+\item des paragraphes ,
+\item et des sous - items .
+}
+\item Un autre item simple .

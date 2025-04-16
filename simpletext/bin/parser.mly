@@ -6,8 +6,9 @@ open Ast
 %token HEADER2
 %token ITEM
 // %token EMPH_OPEN
-// %token BOLD_OPEN
-// %token CLOSE_BRACE
+// %token BOLD_OPEN OPEN_ITEM
+%token OPEN_BRACE
+%token CLOSE_BRACE
 %token BOLD_MARK
 %token ITALIC_MARK
 %token LBRACKET
@@ -41,15 +42,34 @@ corps:
 element:
    HEADER1 texte { HEADER1($2) }
  | HEADER2 texte { HEADER2($2) }
- | suite_items  { List($1) } 
- | texte        { Paragraph($1) }
+ | paragraphe_item        { $1 }
 
+paragraphe_item:
+  suite_items  { List($1) } 
+| paragraphe   { $1 }
+
+paragraphe:
+  texte        { Paragraph($1) }
+  
 suite_items:
   item suite_items { $1 :: $2 }
 | item             { [$1] }
 
 item:
-  ITEM texte { Item($2) }
+  ITEM OPEN_BRACE item_complexe { Item($3) }
+| ITEM paragraphe               { Item([$2]) }
+
+item_complexe:
+  paragraph_block item_block CLOSE_BRACE { $1 @ $2 }
+
+paragraph_block:
+  paragraphe PARAGRAPH_BREAK paragraph_block { $1 :: $3 }
+| paragraphe                          { [$1] }
+
+item_block:
+  item item_block { $1 :: $2 }
+|                              { [] }
+
 
 element_de_texte:
   TEXT                                { Word($1) }
