@@ -59,16 +59,16 @@ suite_items:
 | item             { [$1] }
 
 item:
-  ITEM OPEN_BRACE item_complexe CLOSE_BRACE { Item($3) }
-| ITEM paragraphe               { Item([$2]) }
+  ITEM OPEN_BRACE paragraphe item_complexe CLOSE_BRACE { SOUSITEM($3, $4) }
+| ITEM paragraphe               { ITEM($2) }
 
 item_complexe:
   item_content item_complexe { $1 :: $2 }
 |                            { [] }
 
 item_content:
-  paragraphe PARAGRAPH_BREAK { $1 }
-| ITEM paragraphe            { Item([$2]) }
+  paragraphe PARAGRAPH_BREAK { CONTENUE($1) }
+| ITEM paragraphe            { ITEM($2) }
 
 element_de_texte:
   TEXT                                { Word($1) }

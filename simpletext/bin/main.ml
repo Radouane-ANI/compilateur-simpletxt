@@ -9,7 +9,7 @@ let () =
   try
     let doc = Parser.main Lexer.token lexbuf in
     print_endline "Parsing OK!";
-    print_endline (Ast.string_of_document doc)
+    Ast.write_document_to_file doc
   with Parser.Error ->
     print_position lexbuf;
     let lexeme = Lexing.lexeme lexbuf in

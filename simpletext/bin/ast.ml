@@ -1,11 +1,15 @@
 type document = element list
 
+and item =
+  | CONTENUE of element
+  | SOUSITEM of element * item list
+  | ITEM of element
+
 and element =
   | HEADER1 of fragment list
   | HEADER2 of fragment list
   | Paragraph of fragment list
-  | List of element list
-  | Item of element list
+  | List of item list
 
 and fragment =
   | Word of string
@@ -27,25 +31,22 @@ let rec string_of_element = function
   | HEADER1 frags -> "<h1>" ^ string_of_fragments frags ^ "</h1>"
   | HEADER2 frags -> "<h2>" ^ string_of_fragments frags ^ "</h2>"
   | Paragraph frags -> "<p>" ^ string_of_fragments frags ^ "</p>"
-  | Item elem -> string_of_item elem
   | List items ->
-      "<ul>"
-      ^ (List.map string_of_element items |> String.concat "\n")
+      "<ul>" ^ String.concat "\n" (List.map string_of_item items) ^ "</ul>"
+
+and string_of_item = function
+  | CONTENUE c -> string_of_element c
+  | SOUSITEM (e, items) ->
+      "<li>" ^ string_of_element e ^ "</li> <ul>"
+      ^ String.concat "\n" (List.map string_of_item items)
       ^ "</ul>"
-
-and string_of_item item =
-  if List.length item == 1 then
-    "<li>" ^ string_of_element (List.hd item) ^ "</li>"
-  else
-    let rec intt i id =
-      match i with
-      | a :: b ->
-          if id = 1 then "<ul>" ^ string_of_element a ^ intt b (id + 1)
-          else string_of_element a ^ intt b (id + 1)
-      | [] -> "</ul>"
-    in
-
-    "<li>" ^ intt item 0 ^ "</li>"
+  | ITEM i -> "<li>" ^ string_of_element i ^ "</li>"
 
 let string_of_document doc =
   List.map string_of_element doc |> String.concat "\n\n"
+
+let write_document_to_file doc =
+  let oc = open_out "outpout.html" in
+  let html = string_of_document doc in
+  output_string oc html;
+  close_out oc
