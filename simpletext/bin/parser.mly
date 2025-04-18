@@ -19,6 +19,9 @@ open Ast
 %token EOF
 %token <string> TEXT 
 
+%nonassoc LOWPRI
+%nonassoc TEXT LBRACKET ITALIC_MARK BOLD_MARK
+
 %start main
 %type <Ast.document> main  
 %type <Ast.element> element
@@ -56,20 +59,16 @@ suite_items:
 | item             { [$1] }
 
 item:
-  ITEM OPEN_BRACE item_complexe { Item($3) }
+  ITEM OPEN_BRACE item_complexe CLOSE_BRACE { Item($3) }
 | ITEM paragraphe               { Item([$2]) }
 
 item_complexe:
-  paragraph_block item_block CLOSE_BRACE { $1 @ $2 }
+  item_content item_complexe { $1 :: $2 }
+|                            { [] }
 
-paragraph_block:
-  paragraphe PARAGRAPH_BREAK paragraph_block { $1 :: $3 }
-| paragraphe                          { [$1] }
-
-item_block:
-  item item_block { $1 :: $2 }
-|                              { [] }
-
+item_content:
+  paragraphe PARAGRAPH_BREAK { $1 }
+| ITEM paragraphe            { Item([$2]) }
 
 element_de_texte:
   TEXT                                { Word($1) }
@@ -80,7 +79,7 @@ element_de_texte:
 
 texte:
   element_de_texte texte { $1 :: $2 }
-|                        { [] }
+|           %prec LOWPRI { [] }
 
 liste_mots:
   TEXT liste_mots { $1 :: $2 }
@@ -90,3 +89,4 @@ liste_mots:
 
 
 
+%%
