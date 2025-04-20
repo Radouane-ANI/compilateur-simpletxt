@@ -12,6 +12,10 @@ rule token = parse
   | "**"             { BOLD_MARK }
   | "*"              { ITALIC_MARK }
 
+  | "\\color"         { COLOR }
+  | "{"               { LBRACE }
+  | "}"               { RBRACE }
+
   | "["              { LBRACKET }
   | "]"              { RBRACKET }
   | "("              { LPAREN }
@@ -24,7 +28,7 @@ rule token = parse
   | [' ' '\t' ]+ { token lexbuf }
   | ['\n']+ { Lexing.new_line lexbuf; token lexbuf }
 
-  | [^ '*' '#' '\\' '[' ']' '(' ')' ' ' '\n' '\t']+ as txt
+  | [^ '*' '#' '\\' '[' ']' '(' ')' '{' '}' ' ' '\n' '\t']+ as txt
                      { TEXT(txt) }
 
   | eof              { EOF }

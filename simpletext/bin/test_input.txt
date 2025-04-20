@@ -7,7 +7,8 @@ sont ignor é s !
 
 Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
 
-    
+Du texte \color{FF0000}{en rouge} et \color{0000FF}{en bleu}.
+
 Pour mettre en forme le texte , on peut utiliser :
 
 \item du * texte en italique * ,

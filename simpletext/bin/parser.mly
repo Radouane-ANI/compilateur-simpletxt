@@ -5,9 +5,9 @@ open Ast
 %token HEADER1
 %token HEADER2
 %token ITEM
-// %token EMPH_OPEN
-// %token BOLD_OPEN
-// %token CLOSE_BRACE
+%token COLOR
+%token LBRACE
+%token RBRACE
 %token BOLD_MARK
 %token ITALIC_MARK
 %token LBRACKET
@@ -56,6 +56,8 @@ element_de_texte:
 | ITALIC_MARK liste_mots ITALIC_MARK { Italic($2) }
 | BOLD_MARK liste_mots BOLD_MARK     { Bold($2) }
 | LBRACKET liste_mots RBRACKET LPAREN TEXT RPAREN { Link($2, $5) }
+| COLOR LBRACE TEXT RBRACE LBRACE liste_mots RBRACE
+    { Color($3, $6) }
 
 
 texte:

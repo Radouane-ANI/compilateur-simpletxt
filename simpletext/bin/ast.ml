@@ -12,6 +12,8 @@ and fragment =
   | Italic of string list
   | Bold of string list
   | Link of string list * string
+  | Color of string * string list
+
 
 let string_of_fragment = function
   | Word w -> w
@@ -19,6 +21,9 @@ let string_of_fragment = function
   | Bold words -> "<strong>" ^ String.concat " " words ^ "</strong>"
   | Link (words, url) ->
       "<a href=\"" ^ url ^ "\" >" ^ String.concat " " words ^ " </a> "
+  | Color (code, words) ->
+      "<span style=\"color:#{" ^ code ^ "\"}" ^ String.concat " {" words ^ "}</span>"
+    
 
 let string_of_fragments frags =
   List.map string_of_fragment frags |> String.concat " "
