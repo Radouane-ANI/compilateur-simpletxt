@@ -22,7 +22,7 @@ let string_of_fragment = function
   | Link (words, url) ->
       "<a href=\"" ^ url ^ "\" >" ^ String.concat " " words ^ " </a> "
   | Color (code, words) ->
-      "<span style=\"color:#{" ^ code ^ "\"}" ^ String.concat " {" words ^ "}</span>"
+    "<span style=\"color:#" ^ code ^ "\">" ^ String.concat " " words ^ "</span>"
     
 
 let string_of_fragments frags =
