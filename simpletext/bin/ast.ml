@@ -13,16 +13,22 @@ and element =
 
 and fragment =
   | Word of string
-  | Italic of string list
-  | Bold of string list
-  | Link of string list * string
+  | Italic of fragment list
+  | Bold of fragment list
+  | Link of fragment list * string
 
-let string_of_fragment = function
+let rec string_of_fragment = function
   | Word w -> w
-  | Italic words -> "<em>" ^ String.concat " " words ^ "</em>"
-  | Bold words -> "<strong>" ^ String.concat " " words ^ "</strong>"
+  | Italic words ->
+      "<em>" ^ String.concat " " (List.map string_of_fragment words) ^ "</em>"
+  | Bold words ->
+      "<strong>"
+      ^ String.concat " " (List.map string_of_fragment words)
+      ^ "</strong>"
   | Link (words, url) ->
-      "<a href=\"" ^ url ^ "\" >" ^ String.concat " " words ^ "</a>"
+      "<a href=\"" ^ url ^ "\" >"
+      ^ String.concat " " (List.map string_of_fragment words)
+      ^ "</a>"
 
 let string_of_fragments frags =
   List.map string_of_fragment frags |> String.concat " "

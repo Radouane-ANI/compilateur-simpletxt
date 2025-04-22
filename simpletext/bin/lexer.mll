@@ -10,6 +10,7 @@ rule token = parse
   | "\\textbf{"      { BOLD_OPEN }  *)
   | "{"              { OPEN_BRACE }
   | "}"              { CLOSE_BRACE }
+  | "***"             { BOLD_ITALIC }
   | "**"             { BOLD_MARK }
   | "*"              { ITALIC_MARK }
 
