@@ -13,20 +13,20 @@ and element =
 
 and fragment =
   | Word of string
-  | Italic of fragment list
-  | Bold of fragment list
+  | StartItalic
+  | EndItalic
+  | StartBold
+  | EndBold
   | Link of fragment list * string
 
 let rec string_of_fragment = function
   | Word w -> w
-  | Italic words ->
-      "<em>" ^ String.concat " " (List.map string_of_fragment words) ^ "</em>"
-  | Bold words ->
-      "<strong>"
-      ^ String.concat " " (List.map string_of_fragment words)
-      ^ "</strong>"
+  | StartItalic -> "<em>"
+  | EndItalic -> "</em>"
+  | StartBold -> "<strong>"
+  | EndBold -> "</strong>"
   | Link (words, url) ->
-      "<a href=\"" ^ url ^ "\" >"
+      "<a href=\"" ^ url ^ "\">"
       ^ String.concat " " (List.map string_of_fragment words)
       ^ "</a>"
 

@@ -7,6 +7,8 @@ sont ignor é s !
 
 Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
 
+*texte en italique ** puis en gras et italique ** et à nouveau en italique seulement*
+
 Pour mettre en forme le texte , on peut utiliser :
 
 \item du * texte en italique * ,

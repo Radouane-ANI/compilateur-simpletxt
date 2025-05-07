@@ -72,39 +72,29 @@ item_content:
 
 element_de_texte:
   TEXT                                { Word($1) }
-| ITALIC_MARK texte2 ITALIC_MARK { Italic($2) }
-| BOLD_MARK texte3 BOLD_MARK     { Bold($2) }
-| BOLD_ITALIC texte4 BOLD_ITALIC     { Italic([Bold($2)]) }
-| LBRACKET texte RBRACKET LPAREN TEXT RPAREN { Link($2, $5) }
-
-element_de_texte2:
-  TEXT                                { Word($1) }
-| BOLD_MARK texte3 BOLD_MARK     { Bold($2) }
-| LBRACKET texte RBRACKET LPAREN TEXT RPAREN { Link($2, $5) }
-
-element_de_texte3:
-  TEXT                                { Word($1) }
-| ITALIC_MARK texte2 ITALIC_MARK { Italic($2) }
-| LBRACKET texte RBRACKET LPAREN TEXT RPAREN { Link($2, $5) }
-
-element_de_texte4:
-  TEXT                                { Word($1) }
 | LBRACKET texte RBRACKET LPAREN TEXT RPAREN { Link($2, $5) }
 
 texte:
   element_de_texte texte { $1 :: $2 }
+| ITALIC_MARK texte2 texte  { StartItalic :: $2 @ $3 }
+| BOLD_MARK texte3 texte      { StartBold :: $2 @ $3 }
+| BOLD_ITALIC texte4 texte      { [StartBold;StartItalic] @ $2 @ $3 }
 |           %prec LOWPRI { [] }
 texte2:
-  element_de_texte2 texte2 { $1 :: $2 }
-|                          { [] }
+  element_de_texte texte2 { $1 :: $2 }
+| ITALIC_MARK                         { [EndItalic] }
+|  BOLD_MARK texte4                       { [StartBold] @ $2 }
+
 texte3:
-  element_de_texte3 texte3 { $1 :: $2 }
-|                          { [] }
+  element_de_texte texte3 { $1 :: $2 }
+|  BOLD_MARK                        { [EndBold] }
+| ITALIC_MARK texte4                       { [StartItalic] @ $2 }
 
 texte4:
-  element_de_texte4 texte4 { $1 :: $2 }
-|                          { [] }
-
-
+  element_de_texte texte4 { $1 :: $2 }
+|                   %prec LOWPRI       { [] }
+| BOLD_ITALIC                        { [EndBold;EndItalic] }
+| ITALIC_MARK texte3                    { [EndItalic] @ $2 }
+|  BOLD_MARK texte2                       { [EndBold] @ $2 }
 
 %%
