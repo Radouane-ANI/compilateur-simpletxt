@@ -20,9 +20,11 @@ rule token = parse
   | "]"              { RBRACKET }
   | "("              { LPAREN }
   | ")"              { RPAREN }
-
+  | "\\begindocument" { BEGINDOCUMENT } 
+  | "\\enddocument"   { ENDDOCUMENT }
+  | "\\define"        { DEFINE }
   | "\\item" [' ' '\t']+ { ITEM }
-
+  | "\\"[ 'a'-'z' 'A'-'Z' ]+ as nom { NOM(nom) }
   | '\n' ([' ' '\t']* '\n')+ { Lexing.new_line lexbuf;
                               Lexing.new_line lexbuf;
                               PARAGRAPH_BREAK }

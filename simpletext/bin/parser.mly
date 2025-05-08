@@ -10,6 +10,10 @@ open Ast
 %token RBRACE
 // %token EMPH_OPEN
 // %token BOLD_OPEN OPEN_ITEM
+%token BEGINDOCUMENT
+%token ENDDOCUMENT
+%token DEFINE
+%token <string> NOM
 %token BOLD_ITALIC
 %token BOLD_MARK
 %token ITALIC_MARK
@@ -22,12 +26,14 @@ open Ast
 %token <string> TEXT 
 
 %nonassoc LOWPRI
-%nonassoc TEXT LBRACKET ITALIC_MARK BOLD_MARK BOLD_ITALIC COLOR
+%nonassoc TEXT LBRACKET ITALIC_MARK BOLD_MARK BOLD_ITALIC COLOR NOM
 
 %start main
 %type <Ast.document> main  
 %type <Ast.element> element
 %type <Ast.fragment list> texte
+%type <Ast.macro list> en_tete
+%type <Ast.macro> macro
 %type <Ast.element list> corps
 %type <Ast.fragment> element_de_texte
 
@@ -36,8 +42,18 @@ open Ast
 main:
   document EOF { $1 }
 
+en_tete:
+  macro en_tete { $1 :: $2 }
+| BEGINDOCUMENT { [] }
+
+macro:
+  DEFINE LBRACE identifiant RBRACE LBRACE texte RBRACE { ($3,$6) }
+
+identifiant:
+  NOM { $1 }
+
 document:
-  corps { $1 }
+  en_tete corps ENDDOCUMENT { ($1, $2) }
 
 corps:
   element PARAGRAPH_BREAK  corps { $1 :: $3 }
@@ -72,9 +88,13 @@ item_content:
 | item            { $1 }
 
 element_de_texte:
+  txt                                 { $1 }
+| COLOR LBRACE txt RBRACE LBRACE texte RBRACE { Color($3, $6) }
+| LBRACKET texte RBRACKET LPAREN txt RPAREN { Link($2, $5) }
+
+txt:
   TEXT                                { Word($1) }
-| COLOR LBRACE TEXT RBRACE LBRACE texte RBRACE { Color($3, $6) }
-| LBRACKET texte RBRACKET LPAREN TEXT RPAREN { Link($2, $5) }
+| NOM                                 { Cle($1) }
 
 texte:
   element_de_texte texte { $1 :: $2 }

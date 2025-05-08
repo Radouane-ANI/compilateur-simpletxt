@@ -1,3 +1,6 @@
+\define {\gas }{ Grammaires et Analyse Syntaxique }
+\define {\BleuCanard }{048B9A }
+\begindocument
 # Exemple de fichier SimpleText
 
 N’ oubliez pas :
@@ -6,6 +9,11 @@ les retours à la ligne
 sont ignor é s !
 
 Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
+
+## Compte rendu du projet de \gas
+
+\item Nous avons impl é ment é des * macros * ,
+\item et de \color {\BleuCanard }{ jolies couleurs } !
 
 Du texte \color{FF0000}{en rouge} et \color{0000FF}{en bleu}.
 
@@ -25,3 +33,4 @@ Il contient :
 \item et des sous - items .
 }
 \item Un autre item simple .
+\enddocument

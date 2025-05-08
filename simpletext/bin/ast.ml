@@ -1,4 +1,5 @@
-type document = element list
+type document = macro list * element list
+and macro = string * fragment list
 
 and item =
   | CONTENUE of element
@@ -13,48 +14,65 @@ and element =
 
 and fragment =
   | Word of string
-  | Color of string * fragment list
+  | Cle of string
+  | Color of fragment * fragment list
   | StartItalic
   | EndItalic
   | StartBold
   | EndBold
-  | Link of fragment list * string
+  | Link of fragment list * fragment
 
-let rec string_of_fragment = function
+let build_macro_table macros =
+  let table = Hashtbl.create 10 in
+  List.iter (fun (key, frags) -> Hashtbl.add table key frags) macros;
+  table
+
+let rec string_of_fragment table = function
   | Word w -> w
+  | Cle c -> (
+      match Hashtbl.find_opt table c with
+      | Some frags -> string_of_fragments table frags
+      | None -> "gere erreur")
   | StartItalic -> "<em>"
   | EndItalic -> "</em>"
   | StartBold -> "<strong>"
   | EndBold -> "</strong>"
   | Link (words, url) ->
-      "<a href=\"" ^ url ^ "\">"
-      ^ String.concat " " (List.map string_of_fragment words)
+      "<a href=\""
+      ^ string_of_fragment table url
+      ^ "\">"
+      ^ String.concat " " (List.map (string_of_fragment table) words)
       ^ "</a>"
   | Color (code, words) ->
-      "<span style=\"color:#" ^ code ^ "\">"
-      ^ String.concat " " (List.map string_of_fragment words)
+      "<span style=\"color:#"
+      ^ string_of_fragment table code
+      ^ "\">"
+      ^ String.concat " " (List.map (string_of_fragment table) words)
       ^ "</span>"
 
-let string_of_fragments frags =
-  List.map string_of_fragment frags |> String.concat " "
+and string_of_fragments table frags =
+  List.map (string_of_fragment table) frags |> String.concat " "
 
-let rec string_of_element = function
-  | HEADER1 frags -> "<h1>" ^ string_of_fragments frags ^ "</h1>"
-  | HEADER2 frags -> "<h2>" ^ string_of_fragments frags ^ "</h2>"
-  | Paragraph frags -> "<p>" ^ string_of_fragments frags ^ "</p>"
+let rec string_of_element table = function
+  | HEADER1 frags -> "<h1>" ^ string_of_fragments table frags ^ "</h1>"
+  | HEADER2 frags -> "<h2>" ^ string_of_fragments table frags ^ "</h2>"
+  | Paragraph frags -> "<p>" ^ string_of_fragments table frags ^ "</p>"
   | List items ->
-      "<ul>" ^ String.concat "\n" (List.map string_of_item items) ^ "</ul>"
-
-and string_of_item = function
-  | CONTENUE c -> string_of_element c
-  | SOUSITEM (e, items) ->
-      "<li>" ^ string_of_element e ^ "</li> <ul>"
-      ^ String.concat "\n" (List.map string_of_item items)
+      "<ul>"
+      ^ String.concat "\n" (List.map (string_of_item table) items)
       ^ "</ul>"
-  | ITEM i -> "<li>" ^ string_of_element i ^ "</li>"
 
-let string_of_document doc =
-  List.map string_of_element doc |> String.concat "\n\n"
+and string_of_item table = function
+  | CONTENUE c -> string_of_element table c
+  | SOUSITEM (e, items) ->
+      "<li>" ^ string_of_element table e ^ "</li><ul>"
+      ^ String.concat "\n" (List.map (string_of_item table) items)
+      ^ "</ul>"
+  | ITEM i -> "<li>" ^ string_of_element table i ^ "</li>"
+
+let string_of_document (macros, elements) =
+  let table = build_macro_table macros in
+  List.map (string_of_element table) elements |> String.concat "\n\n"
 
 let write_document_to_file doc =
   let oc = open_out "outpout.html" in
