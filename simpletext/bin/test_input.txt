@@ -9,8 +9,19 @@ Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
 
 Du texte \color{FF0000}{en rouge} et \color{0000FF}{en bleu}.
 
+*texte en italique, ** puis en gras et italique, * et seulement en gras** 
+
 Pour mettre en forme le texte , on peut utiliser :
 
 \item du * texte en italique * ,
-\item du ** texte en gras ** ,
-\item et des [ liens hypertexte ](https://fr.wikipedia.org/wiki/Hyperlien).
+\item du ** * texte en gras et en italique * ** ,
+\item et des [ liens **\color{FF0000}{en rouge}** ](https://fr.wikipedia.org/wiki/Hyperlien).
+\item Un item simple .
+\item { Et un item complexe .
+
+Il contient :
+
+\item des paragraphes ,
+\item et des sous - items .
+}
+\item Un autre item simple .
