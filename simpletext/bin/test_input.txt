@@ -1,5 +1,6 @@
 \define {\gas }{ Grammaires et Analyse Syntaxique }
 \define {\BleuCanard }{048B9A }
+\define {\gas }{ Grammaire doublon ! } 
 \begindocument
 # Exemple de fichier SimpleText
 
@@ -9,8 +10,9 @@ les retours à la ligne
 sont ignor é s !
 
 Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
+Voici une macro inconnue : \inconnue  % <- Erreur : macro non définie
 
-## Compte rendu du projet de \gas
+## Compte rendu du projet de \gas et \devweb   % <- Erreur : macro non définie
 
 \item Nous avons impl é ment é des * macros * ,
 \item et de \color {\BleuCanard }{ jolies couleurs } !

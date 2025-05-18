@@ -22,17 +22,28 @@ and fragment =
   | EndBold
   | Link of fragment list * fragment
 
-let build_macro_table macros =
-  let table = Hashtbl.create 10 in
-  List.iter (fun (key, frags) -> Hashtbl.add table key frags) macros;
-  table
+  exception Duplicate_macro of string
 
+  let build_macro_table macros =
+    let table = Hashtbl.create 10 in
+    List.iter
+      (fun (key, frags) ->
+        if Hashtbl.mem table key then
+          raise (Duplicate_macro key)
+        else
+          Hashtbl.add table key frags)
+      macros;
+    table
+  
+
+exception Undefined_macro of string
+    
 let rec string_of_fragment table = function
   | Word w -> w
   | Cle c -> (
       match Hashtbl.find_opt table c with
       | Some frags -> string_of_fragments table frags
-      | None -> "gere erreur")
+      | None -> raise (Undefined_macro c)) 
   | StartItalic -> "<em>"
   | EndItalic -> "</em>"
   | StartBold -> "<strong>"
@@ -74,8 +85,14 @@ let string_of_document (macros, elements) =
   let table = build_macro_table macros in
   List.map (string_of_element table) elements |> String.concat "\n\n"
 
-let write_document_to_file doc =
-  let oc = open_out "outpout.html" in
-  let html = string_of_document doc in
-  output_string oc html;
-  close_out oc
+  let write_document_to_file doc =
+    try
+      let oc = open_out "outpout.html" in
+      let html = string_of_document doc in
+      output_string oc html;
+      close_out oc
+    with
+    | Undefined_macro c ->
+        prerr_endline ("Erreur : macro non définie \"" ^ c ^ "\"");
+        exit 1
+  

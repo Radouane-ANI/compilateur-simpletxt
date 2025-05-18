@@ -9,10 +9,18 @@ let () =
   try
     let doc = Parser.main Lexer.token lexbuf in
     print_endline "Parsing OK!";
-    Ast.write_document_to_file doc
-  with Parser.Error ->
-    print_position lexbuf;
-    let lexeme = Lexing.lexeme lexbuf in
-    Printf.eprintf "Lexème: '%s'\n" lexeme;
-    prerr_endline "Erreur de parsing.";
+    Ast.write_document_to_file doc;
     close_in chan
+  with 
+  | Parser.Error ->
+      print_position lexbuf;
+      let lexeme = Lexing.lexeme lexbuf in
+      Printf.eprintf "Lexème: '%s'\n" lexeme;
+      prerr_endline "Erreur de parsing.";
+      close_in chan
+  | Ast.Undefined_macro c ->
+      prerr_endline ( "Erreur : macro non définie \"" ^ c ^ "\"");
+      close_in chan
+  | Ast.Duplicate_macro c ->
+      prerr_endline ( "Erreur : macro \"" ^ c ^ "\" définie plusieurs fois.");
+      close_in chan
