@@ -1,0 +1,52 @@
+\define{\colorOk}{FF9900}
+\define{\colorErreur}{FF0000}
+\begindocument
+# Mise en forme du texte et couleurs
+
+Ce paragraphe comporte plusieurs styles :
+- *Italique*  
+- **Gras**  
+- ***Gras + italique***  
+
+## Liens et couleurs
+
+Un lien vers [wikipedia](https://fr.wikipedia.org/wiki/Hyperlien)
+Du texte en couleur : \color{\colorOk}{orange}  
+Un warning en rouge : \color{\colorErreur}{Attention !}
+
+## Cas complexes
+
+1. *texte en italique, ** puis en gras et italique, * et seulement en gras** 
+
+2. *[Mélange d’italique, \color{FF0000}{couleur} et lien](https://exemple.com)*
+
+3. Bloc multi‑ligne coloré :
+   \color{\colorOk}{
+   Ceci est un paragraphe  
+   coloré sur plusieurs lignes.  
+   Les retours à la ligne sont ignorés.}
+
+## Liste imbriquée stylée
+
+\item Items classiques
+
+\item {1. Premier niveau :
+
+blabla
+
+  \item {2. Deuxième niveau:
+
+    \item Sous-niveau *italique*  
+
+    \item Sous-niveau **gras**  
+
+    \item Sous-niveau ***gras+italique***  
+
+  }
+
+  \item 3. Retour au premier niveau
+
+}
+
+Fin de l’étape 2.
+\enddocument
