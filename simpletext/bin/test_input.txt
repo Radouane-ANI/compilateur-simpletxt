@@ -1,0 +1,38 @@
+\define {\gas }{ Grammaires et Analyse Syntaxique }
+\define {\BleuCanard }{048B9A }
+\define {\gas }{ Grammaire doublon ! } 
+\begindocument
+# Exemple de fichier SimpleText
+
+N’ oubliez pas :
+dans un fichier SimpleText ,
+les retours à la ligne
+sont ignor é s !
+
+Pour faire un nouveau paragraphe , il faut faire un * saut * de ligne .
+Voici une macro inconnue : \inconnue  % <- Erreur : macro non définie
+
+## Compte rendu du projet de \gas et \devweb   % <- Erreur : macro non définie
+
+\item Nous avons impl é ment é des * macros * ,
+\item et de \color {\BleuCanard }{ jolies couleurs } !
+
+Du texte \color{FF0000}{en rouge} et \color{0000FF}{en bleu}.
+
+*texte en italique, ** puis en gras et italique, * et seulement en gras** 
+
+Pour mettre en forme le texte , on peut utiliser :
+
+\item du * texte en italique * ,
+\item du ** * texte en gras et en italique * ** ,
+\item et des [ liens **\color{FF0000}{en rouge}** ](https://fr.wikipedia.org/wiki/Hyperlien).
+\item Un item simple .
+\item { Et un item complexe .
+
+Il contient :
+
+\item des paragraphes ,
+\item et des sous - items .
+}
+\item Un autre item simple .
+\enddocument

@@ -1,0 +1,22 @@
+\define{\sigle}{SimpleText}
+\define{\author}{Sami - Radouane}
+\define{\version}{v1.0}
+\begindocument
+# Définition de macros
+
+Projet    : \sigle  
+
+Auteur    : \author  
+
+Version   : \version
+
+> Vérifie que les macros fonctionnent aussi :
+
+> - en fin de ligne : \sigle
+
+> - à l’intérieur d’un mot : pré\sigle-post
+
+> - plusieurs fois dans la même phrase : \sigle, \sigle, \sigle  
+
+
+\enddocument
